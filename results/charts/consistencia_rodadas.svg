@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%" style="background:#0f172a; font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;">
+<rect width="800" height="450" rx="12" fill="#0f172a"/>
+<text x="90" y="36" fill="#f8fafc" font-size="20" font-weight="700">Consistência e Variação por Rodada</text>
+<text x="90" y="58" fill="#94a3b8" font-size="13">Tempo de execução medido em cada rodada independente (em segundos)</text>
+<line x1="90" y1="390.0" x2="750" y2="390.0" stroke="#1e293b" stroke-width="1"/>
+<text x="78" y="394.0" fill="#64748b" font-size="11" text-anchor="end">0s</text>
+<line x1="90" y1="328.0" x2="750" y2="328.0" stroke="#1e293b" stroke-width="1"/>
+<text x="78" y="332.0" fill="#64748b" font-size="11" text-anchor="end">18s</text>
+<line x1="90" y1="266.0" x2="750" y2="266.0" stroke="#1e293b" stroke-width="1"/>
+<text x="78" y="270.0" fill="#64748b" font-size="11" text-anchor="end">35s</text>
+<line x1="90" y1="204.0" x2="750" y2="204.0" stroke="#1e293b" stroke-width="1"/>
+<text x="78" y="208.0" fill="#64748b" font-size="11" text-anchor="end">53s</text>
+<line x1="90" y1="142.0" x2="750" y2="142.0" stroke="#1e293b" stroke-width="1"/>
+<text x="78" y="146.0" fill="#64748b" font-size="11" text-anchor="end">70s</text>
+<line x1="90" y1="80.0" x2="750" y2="80.0" stroke="#1e293b" stroke-width="1"/>
+<text x="78" y="84.0" fill="#64748b" font-size="11" text-anchor="end">88s</text>
+<line x1="200.0" y1="80" x2="200.0" y2="390" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="200.0" y="415.0" fill="#94a3b8" font-size="12" text-anchor="middle">Rodada 1</text>
+<line x1="310.0" y1="80" x2="310.0" y2="390" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="310.0" y="415.0" fill="#94a3b8" font-size="12" text-anchor="middle">Rodada 2</text>
+<line x1="420.0" y1="80" x2="420.0" y2="390" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="420.0" y="415.0" fill="#94a3b8" font-size="12" text-anchor="middle">Rodada 3</text>
+<line x1="530.0" y1="80" x2="530.0" y2="390" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="530.0" y="415.0" fill="#94a3b8" font-size="12" text-anchor="middle">Rodada 4</text>
+<line x1="640.0" y1="80" x2="640.0" y2="390" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="640.0" y="415.0" fill="#94a3b8" font-size="12" text-anchor="middle">Rodada 5</text>
+<circle cx="200.0" cy="286.6" r="6" fill="#64748b" stroke="#0f172a" stroke-width="2"/>
+<circle cx="310.0" cy="296.6" r="6" fill="#64748b" stroke="#0f172a" stroke-width="2"/>
+<circle cx="420.0" cy="297.7" r="6" fill="#64748b" stroke="#0f172a" stroke-width="2"/>
+<circle cx="530.0" cy="280.7" r="6" fill="#64748b" stroke="#0f172a" stroke-width="2"/>
+<circle cx="640.0" cy="284.4" r="6" fill="#64748b" stroke="#0f172a" stroke-width="2"/>
+<path d="M 200.0 286.6 L 310.0 296.6 L 420.0 297.7 L 530.0 280.7 L 640.0 284.4" fill="none" stroke="#64748b" stroke-width="2" opacity="0.6"/>
+<circle cx="200.0" cy="213.9" r="6" fill="#f59e0b" stroke="#0f172a" stroke-width="2"/>
+<circle cx="310.0" cy="226.8" r="6" fill="#f59e0b" stroke="#0f172a" stroke-width="2"/>
+<circle cx="420.0" cy="160.7" r="6" fill="#f59e0b" stroke="#0f172a" stroke-width="2"/>
+<circle cx="530.0" cy="219.8" r="6" fill="#f59e0b" stroke="#0f172a" stroke-width="2"/>
+<circle cx="640.0" cy="207.3" r="6" fill="#f59e0b" stroke="#0f172a" stroke-width="2"/>
+<path d="M 200.0 213.9 L 310.0 226.8 L 420.0 160.7 L 530.0 219.8 L 640.0 207.3" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.6"/>
+<circle cx="200.0" cy="271.6" r="6" fill="#3b82f6" stroke="#0f172a" stroke-width="2"/>
+<circle cx="310.0" cy="274.4" r="6" fill="#3b82f6" stroke="#0f172a" stroke-width="2"/>
+<circle cx="420.0" cy="271.0" r="6" fill="#3b82f6" stroke="#0f172a" stroke-width="2"/>
+<circle cx="530.0" cy="260.4" r="6" fill="#3b82f6" stroke="#0f172a" stroke-width="2"/>
+<circle cx="640.0" cy="168.0" r="6" fill="#3b82f6" stroke="#0f172a" stroke-width="2"/>
+<path d="M 200.0 271.6 L 310.0 274.4 L 420.0 271.0 L 530.0 260.4 L 640.0 168.0" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.6"/>
+<circle cx="200.0" cy="120.4" r="6" fill="#10b981" stroke="#0f172a" stroke-width="2"/>
+<circle cx="310.0" cy="129.7" r="6" fill="#10b981" stroke="#0f172a" stroke-width="2"/>
+<circle cx="420.0" cy="129.7" r="6" fill="#10b981" stroke="#0f172a" stroke-width="2"/>
+<circle cx="530.0" cy="133.5" r="6" fill="#10b981" stroke="#0f172a" stroke-width="2"/>
+<circle cx="640.0" cy="134.3" r="6" fill="#10b981" stroke="#0f172a" stroke-width="2"/>
+<path d="M 200.0 120.4 L 310.0 129.7 L 420.0 129.7 L 530.0 133.5 L 640.0 134.3" fill="none" stroke="#10b981" stroke-width="2" opacity="0.6"/>
+<circle cx="570" cy="90" r="5" fill="#64748b"/>
+<text x="582" y="94" fill="#cbd5e1" font-size="11">V1 (ZIP Baseline)</text>
+<circle cx="570" cy="112" r="5" fill="#f59e0b"/>
+<text x="582" y="116" fill="#cbd5e1" font-size="11">V2 (CSV Iterativo)</text>
+<circle cx="570" cy="134" r="5" fill="#3b82f6"/>
+<text x="582" y="138" fill="#cbd5e1" font-size="11">V3 (CSV Concorrente)</text>
+<circle cx="570" cy="156" r="5" fill="#10b981"/>
+<text x="582" y="160" fill="#cbd5e1" font-size="11">V4 (Parquet Streaming)</text>
+</svg>

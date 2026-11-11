@@ -1,0 +1,36 @@
+# ==============================================================================
+# Git Ignore - benchmark-opt-tse-analytics
+# ==============================================================================
+
+# Ambientes virtuais e compilados Python
+.venv/
+env/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ruff_cache/
+.pytest_cache/
+
+# Dados brutos baixados/extraídos nas rodadas de teste
+# Cada rodada de teste produz ~24 GB de arquivos brutos (ZIPs e CSVs).
+# Mantemos versionados apenas os relatórios consolidados, CSVs de métricas e gráficos.
+results/rodada_*/
+results/runs/
+results/**/data/
+results/**/output_*/
+*.zip
+*.parquet
+*.csv.gz
+
+# Logs de erro e saídas temporárias
+*.log
+results/**/error.log
+
+# Arquivos de IDE e Sistema Operacional
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini

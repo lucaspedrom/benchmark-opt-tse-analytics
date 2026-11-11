@@ -1,0 +1,65 @@
+{
+  "project": {
+    "name": "benchmark-opt-tse-analytics",
+    "target_repository": "tse-ingestao",
+    "description": "Suíte de benchmark experimental e análise de desempenho das versões de ingestão de dados do TSE"
+  },
+  "hardware": {
+    "cpu_model": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "cpu_physical_cores": 10,
+    "cpu_logical_cores": 16,
+    "ram_total_gb": 23.69,
+    "os_name": "Windows",
+    "os_release": "11",
+    "os_version": "10.0.26300"
+  },
+  "runtime": {
+    "python_version": "3.13.11",
+    "uv_version": "0.9.17",
+    "shared_venv": "bench_v4/.venv"
+  },
+  "benchmark_protocol": {
+    "design": "Randomized Complete Block Design (RCBD)",
+    "isolation_method": "Git Worktree (commits imutáveis isolados)",
+    "cooldown_seconds": 15,
+    "cli_arguments": [
+      "-i", "2014",
+      "-f", "2022",
+      "--intervalo", "4"
+    ],
+    "tested_years": [2014, 2018, 2022],
+    "tested_datasets": [
+      "candidatos",
+      "bens_candidatos",
+      "coligacoes",
+      "motivo_cassacao",
+      "votacao_candidato_municipio_zona"
+    ]
+  },
+  "versions_under_test": {
+    "v1": {
+      "commit": "e010a7f",
+      "title": "V1 - Baseline HTTP Download (ZIP)",
+      "description": "Download direto sequencial de arquivos ZIP via requests, persistência em disco sem extração.",
+      "output_format": "ZIP (compactado bruto)"
+    },
+    "v2": {
+      "commit": "d082d9b",
+      "title": "V2 - Extração e Catálogo para CSV",
+      "description": "Descompactação de ZIP em streaming, catálogo de datasets e persistência de arquivos CSV.",
+      "output_format": "CSV (texto puro descompactado)"
+    },
+    "v3": {
+      "commit": "0485406",
+      "title": "V3 - Concorrência, Pooling & LPT",
+      "description": "ThreadPoolExecutor concorrente, Connection Pool HTTP persistente, ordenação LPT (Longest Processing Time) e retries com backoff.",
+      "output_format": "CSV (texto puro descompactado)"
+    },
+    "v4": {
+      "commit": "a980086",
+      "title": "V4 - Streaming em Memória para Apache Parquet",
+      "description": "Conversão direta de streams HTTP e descompactação em memória para tabelas Apache Parquet particionadas via PyArrow.",
+      "output_format": "Apache Parquet (colunar analítico particionado)"
+    }
+  }
+}

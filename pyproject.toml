@@ -1,0 +1,24 @@
+[project]
+name = "benchmark-opt-tse-analytics"
+version = "0.1.0"
+description = "Suíte de benchmark experimental e análise de desempenho das versões de ingestão de dados do TSE"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Lucas", email = "lucas@example.com" }
+]
+dependencies = [
+    "pandas>=2.2.0",
+    "psutil>=6.0.0",
+]
+
+[project.optional-dependencies]
+charts = [
+    "matplotlib>=3.8.0",
+    "seaborn>=0.13.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.0",
+]
