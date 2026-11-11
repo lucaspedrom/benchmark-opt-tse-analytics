@@ -1,4 +1,4 @@
-# 🔬 Benchmark de Desempenho e Armazenamento: `opt-tse-analytics`
+# 🔬 Benchmark de Desempenho e Armazenamento: [`opt-tse-analytics`](https://github.com/lucaspedrom/opt-tse-analytics)
 
 > **Estudo Experimental de Engenharia de Software, Otimização de I/O e FinOps em Pipelines de Dados**  
 > Repositório Principal de Engenharia: [**opt-tse-analytics**](https://github.com/lucaspedrom/opt-tse-analytics)
