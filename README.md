@@ -1,13 +1,20 @@
 # 🔬 Benchmark de Desempenho e Armazenamento: [`opt-tse-analytics`](https://github.com/lucaspedrom/opt-tse-analytics)
 
-> **Estudo Experimental de Engenharia de Software, Otimização de I/O e FinOps em Pipelines de Dados**  
-> Repositório Principal de Engenharia: [**opt-tse-analytics**](https://github.com/lucaspedrom/opt-tse-analytics)
+<dev align="center">
 
-[![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![uv](https://img.shields.io/badge/managed%20by-uv-DE5FE9?style=flat-square)](https://github.com/astral-sh/uv)
-[![Apache Parquet](https://img.shields.io/badge/Format-Apache%20Parquet-508BA9?style=flat-square)](https://parquet.apache.org/)
-[![Protocol](https://img.shields.io/badge/Design-RCBD%20Experimental-0284c7?style=flat-square)](#-metodologia-científica-experimental)
+![Python](https://img.shields.io/badge/Python-3.13%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![uv](https://img.shields.io/badge/Gerenciador-uv-DE5FE9?style=for-the-badge)
+![Apache Parquet](https://img.shields.io/badge/Apache_Parquet-ZSTD-50C878?style=for-the-badge)
+![Protocol](https://img.shields.io/badge/Design-RCBD%20Experimental-0284c7?style=for-the-badge)
 
+</dev>
+
+><dev><p align="center">
+  <b>Estudo Experimental de Engenharia de Software, Otimização de I/O e FinOps em Pipelines de Dados.</b><br>
+  <i>Repositório Principal de Engenharia: <a href="https://github.com/lucaspedrom/opt-tse-analytics"><b>opt-tse-analytics</b>.</i>
+</p>
+</dev>
+     
 ---
 
 ## 📌 Sumário Executivo
