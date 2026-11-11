@@ -8,7 +8,7 @@
 Suíte de Testes e Benchmark Científico de Ingestão de Dados do TSE
 ===================================================================
 Este script orquestra a execução controlada e comparativa das versões do
-projeto tse-ingestao utilizando o modelo experimental Randomized Complete Block
+projeto opt-tse-analytics utilizando o modelo experimental Randomized Complete Block
 Design (RCBD), medição em tempo real de CPU, RAM e Rede com psutil, isolamento
 de arquivos e cálculo de métricas estatísticas consolidadas.
 """
@@ -144,7 +144,7 @@ def collect_environment_metadata():
     env_data = {
         "project": {
             "name": "benchmark-opt-tse-analytics",
-            "target_repository": "tse-ingestao",
+            "target_repository": "opt-tse-analytics",
             "description": "Suíte de benchmark experimental e análise de desempenho das versões de ingestão de dados do TSE",
             "collected_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         },

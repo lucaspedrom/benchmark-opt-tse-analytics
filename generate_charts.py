@@ -4,7 +4,7 @@
 # ]
 # ///
 """
-Gerador de Gráficos do Benchmark TSE-Ingestão
+Gerador de Gráficos do Benchmark 'opt-tse-analytics'
 =============================================
 Gera visualizações gráficas de alta qualidade (vetorial SVG e PNG se matplotlib estiver disponível)
 com base nos resultados consolidados das baterias de testes.
@@ -232,7 +232,33 @@ def main():
         colors=colors
     )
 
-    # 3. Gráfico de Dispersão das Rodadas
+    # 3. Gráfico de Pico de Memória RAM
+    if "pico_ram_medio_mb" in df_summary.columns:
+        ram = df_summary["pico_ram_medio_mb"].tolist()
+        create_svg_bar_chart(
+            title="Pico Médio de Memória RAM (Peak RSS)",
+            subtitle="Consumo máximo de memória física do processo e filhos (em Megabytes)",
+            labels=labels,
+            values=ram,
+            unit="MB",
+            filename="pico_ram.svg",
+            colors=colors
+        )
+
+    # 4. Gráfico de Velocidade de Download (Throughput)
+    if "velocidade_download_media_mbs" in df_summary.columns:
+        download_speed = df_summary["velocidade_download_media_mbs"].tolist()
+        create_svg_bar_chart(
+            title="Velocidade Média de Download (Throughput)",
+            subtitle="Taxa efetiva de transferência de rede contra os servidores do TSE (em MB/s)",
+            labels=labels,
+            values=download_speed,
+            unit="MB/s",
+            filename="velocidade_download.svg",
+            colors=colors
+        )
+
+    # 5. Gráfico de Dispersão das Rodadas
     create_svg_scatter_chart(
         raw_df=df_raw,
         filename="consistencia_rodadas.svg"

@@ -1,7 +1,7 @@
-# 🔬 Benchmark de Desempenho e Armazenamento: `tse-ingestao`
+# 🔬 Benchmark de Desempenho e Armazenamento: `opt-tse-analytics`
 
 > **Estudo Experimental de Engenharia de Software, Otimização de I/O e FinOps em Pipelines de Dados**  
-> Repositório Principal de Engenharia: [**tse-ingestao**](https://github.com/lucas/tse-ingestao) *(substitua pelo link do seu repositório)*
+> Repositório Principal de Engenharia: [**opt-tse-analytics**](https://github.com/lucaspedrom/opt-tse-analytics)
 
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![uv](https://img.shields.io/badge/managed%20by-uv-DE5FE9?style=flat-square)](https://github.com/astral-sh/uv)
@@ -12,11 +12,11 @@
 
 ## 📌 Sumário Executivo
 
-Este repositório documenta a suíte de testes, metodologia experimental e resultados consolidados do benchmark de desempenho realizado sobre as versões evolutivas do projeto **`tse-ingestao`**.
+Este repositório documenta a suíte de testes, metodologia experimental e resultados consolidados do benchmark de desempenho realizado sobre as versões evolutivas do projeto **`opt-tse-analytics`**.
 
-O objetivo primordial da esteira `tse-ingestao` foi substituir um pipeline monolítico e ineficiente — que consumia **13 minutos de execução** e **gigabytes de espaço em disco** — por uma arquitetura ágil, paralela e com processamento em *streaming*, capaz de disponibilizar dados eleitorais prontos para análise (*Analytics-Ready*) em **menos de 1 minuto e ocupando apenas megabytes**.
+O objetivo primordial do projeto foi transformar uma abordagem sequencial e pesada de extração de dados — que descompactava quase **11 GB de arquivos CSV em disco**, impondo um severo gargalo de I/O e armazenamento — em uma esteira analítica moderna, com concorrência otimizada e processamento em *streaming in-memory*. A versão final entrega dados tipados, particionados e prontos para consulta (*Analytics-Ready*) em formato **Apache Parquet**, reduzindo o armazenamento final para apenas **278 MB** (**economia de 97,5% em disco**).
 
-Para comprovar formalmente os ganhos de engenharia e evitar métricas ilusórias (*vanity metrics*), desenvolveu-se esta suíte de testes independente com repetições em bloco casualizado, isolamento por `git worktree` e amostragem contínua de recursos (CPU, RAM, Rede e Disco).
+Para comprovar formalmente os ganhos de engenharia e evitar métricas ilusórias (*vanity metrics*), desenvolveu-se esta suíte de testes independente com **10 rodadas em bloco casualizado (RCBD)**, isolamento por `git worktree` e amostragem contínua de recursos (CPU, RAM, Rede e Disco) via `psutil`.
 
 ---
 
@@ -48,7 +48,7 @@ Para inibir variáveis de confusão externas (latência flutuante da CDN do TSE,
 5. **Cooldown e Esgotamento de Sockets TCP:**
    Entre cada execução individual, foi estabelecido um intervalo obrigatório de **15 segundos** (*cooldown*). Isso permite fechar *sockets* de rede em estado `TIME_WAIT` e estabilizar a temperatura e frequência do processador.
 6. **Amostragem em Tempo Real de Recursos com `psutil`:**
-   O orquestrador monitora de forma assíncrona o consumo de CPU (média e pico) e o pico de consumo de memória física (Peak RSS) de toda a árvore de subprocessos, além do tráfego bruto recebido pela placa de rede.
+   O orquestrador monitora de forma assíncrona o consumo de CPU (média e pico) e o pico de consumo de memória física (Peak RSS) de toda a árvore de subprocessos, além do tráfego bruto recebido pela placa de rede e a velocidade média de download em MB/s.
 
 ---
 
@@ -68,14 +68,14 @@ Todas as métricas foram coletadas na mesma máquina e registradas em [`results/
 
 ## 📊 Resultados Consolidados
 
-Abaixo estão os resultados consolidados a partir da primeira bateria de **5 rodadas experimentais** completas (20 execuções isoladas):
+Abaixo estão os resultados consolidados a partir da bateria completa de **10 rodadas experimentais** (40 execuções isoladas):
 
-| Versão | Tempo Médio | Tempo Mediana | Desvio Padrão ($\sigma$) | Tempo Mín | Tempo Máx | Armazenamento Final | Arquivos Gerados | Entregável Final |
+| Versão | Tempo Médio | Tempo Mediana | Desvio Padrão ($\sigma$) | Armazenamento Final | Pico RAM Médio | CPU Média | Download Médio | Entregável Final |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **V1** | **28,50s** | 29,23s | 2,14s | 26,09s | 30,91s | **1.440,36 MB** (~1,44 GB) | 15 | 15 ZIPs compactados brutos |
-| **V2** | **52,12s** | 49,80s | 7,39s | 46,15s | 64,83s | **10.992,69 MB** (~10,99 GB) | 15 | 15 CSVs extraídos |
-| **V3** | **39,85s** | **33,66s** | 12,90s | 32,68s | 62,77s | **10.992,69 MB** (~10,99 GB) | 15 | 15 CSVs extraídos |
-| **V4** | **73,66s** | 73,60s | **1,56s** | 72,31s | 76,23s | **278,72 MB** (~0,28 GB) | 15 | **Partições Apache Parquet** |
+| **V1** | 56,08s | 60,20s | 12,43s | **1.440,36 MB** (~1,44 GB) | 1.021,29 MB | 14,02% | 27,92 MB/s | 15 ZIPs compactados brutos |
+| **V2** | 77,02s | 79,41s | 12,02s | **10.992,69 MB** (~10,99 GB) | **76,58 MB** | 17,05% | 19,41 MB/s | 15 CSVs extraídos em disco |
+| **V3** | **44,91s** | **47,12s** | 6,98s | **10.992,69 MB** (~10,99 GB) | 87,51 MB | 14,04% | **34,17 MB/s** | 15 CSVs extraídos em disco |
+| **V4** | 84,20s | 86,09s | **5,88s** | **278,72 MB** (~0,28 GB) | 2.111,22 MB | **10,49%** | 17,79 MB/s | **Partições Apache Parquet** |
 
 > Os dados brutos detalhados de cada execução encontram-se em [`results/benchmark_raw.csv`](results/benchmark_raw.csv) e o consolidado em [`results/benchmark_summary.csv`](results/benchmark_summary.csv).
 
@@ -89,7 +89,13 @@ Abaixo estão os resultados consolidados a partir da primeira bateria de **5 rod
 ### 2. Consumo de Armazenamento em Disco (MB)
 ![Armazenamento em Disco](results/charts/armazenamento_disco.svg)
 
-### 3. Consistência e Previsibilidade entre as Rodadas
+### 3. Velocidade Média de Download (Throughput de Rede)
+![Velocidade de Download](results/charts/velocidade_download.svg)
+
+### 4. Pico Médio de Memória RAM (Peak RSS)
+![Pico de RAM](results/charts/pico_ram.svg)
+
+### 5. Consistência e Previsibilidade entre as 10 Rodadas
 ![Consistência das Rodadas](results/charts/consistencia_rodadas.svg)
 
 ---
@@ -97,25 +103,28 @@ Abaixo estão os resultados consolidados a partir da primeira bateria de **5 rod
 ## 💡 Análise Crítica e Trade-offs de Engenharia
 
 ### 1. A Falácia da Métrica de Vaidade (V1)
-À primeira vista, uma análise ingênua apontaria a **V1** como vencedora isolada por completar em apenas **28,5 segundos**. No entanto, **a V1 não entrega valor analítico**: ela simplesmente efetua o download cego do arquivo `.zip` para o disco. 
-Todo o trabalho computacional pesado — descompactação, validação e carregamento de dados — foi empurrado para o elo seguinte da esteira, gerando um débito técnico severo.
+A **V1** registra um tempo médio de **56,08s** e download a **27,92 MB/s**, parecendo rápida à primeira vista. No entanto, **a V1 não entrega valor analítico**: ela simplesmente efetua o download cego do arquivo `.zip` para o disco. 
+Todo o trabalho computacional pesado — descompactação, validação e carregamento de dados — foi delegado para o usuário ou elo seguinte da esteira, gerando um débito técnico severo e deixando 1,44 GB de binários fechados.
 
 ### 2. O Preço da Disponibilidade do Dado (V1 ➔ V2)
-A **V2** implementa a extração necessária para que os analistas consigam ler os dados. Essa mudança revela o custo oculto de lidar com dados em texto puro (`.csv`):
-* O tempo de execução subiu para **52,1s** (+82% em relação à V1).
-* O armazenamento explodiu de **1,4 GB para 11 GB** (um aumento de **7,6x**).
-* Demonstra claramente o gargalo severo de *I/O de disco* quando um pipeline precisa descompactar e persistir múltiplos gigabytes de arquivos texto.
+A **V2** implementa a extração necessária para que os dados fiquem legíveis em formato aberto (`.csv`). Essa mudança revela o custo oculto de lidar com dados em texto puro descompactados:
+* O tempo de execução salta para **77,02s** (mediana de **79,41s**), com o maior uso médio de processador da suíte (**17,05%** de CPU).
+* O armazenamento explode de **1,44 GB para quase 11 GB** (um aumento de **7,6x**).
+* A velocidade média de download cai para **19,41 MB/s** em decorrência do gargalo severo de *I/O de disco*, onde a CPU e o barramento gastam ciclos descompactando e gravando múltiplos gigabytes de texto em disco em concorrência com a recepção da rede.
 
 ### 3. Eficiência de Concorrência e Pooling (V2 ➔ V3)
 Ao manter rigorosamente o mesmo produto final da V2 (os mesmos 11 GB de CSVs), a **V3** implementa **Connection Pooling HTTP**, **`ThreadPoolExecutor`** e o algoritmo de escalonamento **Longest Processing Time (LPT)**:
-* A mediana de tempo caiu de **49,8s para 33,66s** (**redução de 32,4%**).
-* Prova a eficácia das otimizações de rede e concorrência: enquanto tarefas menores aguardam, as maiores ocupam os *workers* imediatamente, minimizando o tempo ocioso (*tail latency*).
+* **A V3 se torna a versão mais rápida em tempo absoluto**, com média de **44,91s** e mediana de **47,12s**.
+* Isso representa uma **redução de 41,7% no tempo médio** frente à V2 (de 77,0s para 44,9s).
+* O throughput de download salta de 19,41 MB/s (V2) para **34,17 MB/s (V3)** — um **ganho de vazão de 76%** decorrente do reuso de conexões TCP já abertas e do paralelismo de arquivos.
+* O desvio padrão cai quase pela metade (de 12,02s para **6,98s**), garantindo maior confiabilidade de rede.
 
 ### 4. A Revolução do Streaming Colunar em Memória (V3 ➔ V4)
-A **V4** é o ápice do projeto, transformando radicalmente o modelo de dados:
-* **Redução de 97,5% no consumo de disco:** O volume gerado despencou de **11.000 MB para apenas 278 MB**.
-* **Menor que o próprio arquivo compactado original:** Os 278 MB de Parquet particionado ocupam **80% menos espaço do que os arquivos ZIP originais da V1 (1.440 MB)**, provando a superioridade da compressão colunar com dicionários e *bit-packing*.
-* **Extrema Previsibilidade Operacional:** Enquanto a V3 apresentou desvio padrão de **12,90s** devido a variações de concorrência e disco, a V4 apresentou uma estabilidade excepcional com desvio padrão de apenas **1,56s** (variação menor que 2%).
+A **V4** é o ápice arquitetural do projeto, reformulando o fluxo de dados para o padrão moderno de Engenharia de Dados:
+* **Redução de 97,5% no consumo de disco:** O volume gerado cai drasticamente de **10.992 MB para apenas 278,72 MB**.
+* **Menor que o próprio arquivo compactado original:** Os 278 MB de Parquet particionado ocupam **80,6% menos espaço do que os arquivos ZIP originais da V1 (1.440 MB)**, provando a superioridade da compressão colunar com dicionários e *bit-packing*.
+* **Extrema Previsibilidade Operacional:** A V4 apresentou o **menor desvio padrão de todas as versões ($\sigma = 5,88s$)**, garantindo um tempo estável em torno de 84s.
+* **O Trade-off de Engenharia (RAM vs Disco):** Para alcançar essa economia massiva de armazenamento sem sacrificar a máquina com arquivos intermediários, a V4 realiza o parsing, descompressão e estruturação colunar do Arrow inteiramente em memória RAM. O pico de RAM médio atingiu **2.111 MB (~2,1 GB)**, mas em contrapartida registrou o **menor consumo médio de CPU da suíte (10,49%)** e eliminou totalmente o I/O de disco temporário.
 * **Impacto em FinOps:** Em ambientes de nuvem (AWS S3, Google Cloud Storage, Athena, BigQuery ou DuckDB), uma redução de 97,5% em bytes armazenados e escaneados resulta em **economias proporcionais imediatas nas faturas de armazenamento e consulta analítica**.
 
 ---
@@ -128,7 +137,7 @@ A **V4** é o ápice do projeto, transformando radicalmente o modelo de dados:
 
 ```
 D:\Projetos/
-├── tse-ingestao/        # Repositório original com histórico Git
+├── opt-tse-analytics/   # Repositório original com histórico Git
 ├── bench_v1/            # Worktree commit e010a7f
 ├── bench_v2/            # Worktree commit d082d9b
 ├── bench_v3/            # Worktree commit 0485406
@@ -136,7 +145,7 @@ D:\Projetos/
 └── benchmark_suite/     # Este repositório (benchmark-opt-tse-analytics)
 ```
 
-Para recriar os worktrees a partir da raiz do `tse-ingestao`:
+Para recriar os worktrees a partir da raiz do `opt-tse-analytics`:
 ```bash
 git worktree add ../bench_v1 e010a7f
 git worktree add ../bench_v2 d082d9b
@@ -146,7 +155,7 @@ git worktree add ../bench_v4 a980086
 
 ### 2. Executando o Benchmark
 
-Para rodar uma bateria completa com 10 rodadas (padrão) e monitoramento avançado:
+Para rodar a bateria completa com 10 rodadas (padrão) e monitoramento de sistema:
 ```powershell
 cd D:\Projetos\benchmark_suite
 uv run benchmark_runner.py --rodadas 10 --cooldown 15
@@ -181,11 +190,13 @@ benchmark-opt-tse-analytics/
 ├── README.md                # Relatório técnico completo de engenharia
 └── results/
     ├── environment.json     # Metadados de hardware, SO, CPU, RAM e commits
-    ├── benchmark_raw.csv    # Histórico detalhado de todas as execuções
-    ├── benchmark_summary.csv# Agregação estatística (médias, medianas, desvio padrão)
-    └── charts/              # Gráficos de alta resolução para apresentação
+    ├── benchmark_raw.csv    # Histórico detalhado de todas as 40 execuções
+    ├── benchmark_summary.csv# Agregação estatística (médias, medianas, desvios e percentis)
+    └── charts/              # Gráficos vetoriais de alta resolução
         ├── tempo_execucao.svg
         ├── armazenamento_disco.svg
+        ├── velocidade_download.svg
+        ├── pico_ram.svg
         └── consistencia_rodadas.svg
 ```
 
