@@ -131,49 +131,97 @@ A **V4** é o ápice arquitetural do projeto, reformulando o fluxo de dados para
 
 ## 🚀 Como Reproduzir o Benchmark
 
+Esta suíte foi projetada para ser **100% reprodutível** em qualquer computador (Windows, macOS ou Linux). Para que o orquestrador localize automaticamente os ambientes isolados de teste, os repositórios e os *worktrees* devem coexistir como pastas irmãs dentro do mesmo diretório base.
+
+---
+
 ### 1. Pré-requisitos
-* Sistema com [**uv**](https://github.com/astral-sh/uv) instalado.
-* Repositório clonado e diretórios *worktrees* configurados como pastas irmãs:
+* [**Git**](https://git-scm.com/) instalado e acessível no terminal.
+* [**Python 3.11+**](https://www.python.org/) instalado.
+* [**uv**](https://github.com/astral-sh/uv) instalado (gerenciador de pacotes e ambientes virtuais ultrarrápido).
 
-```
-D:\Projetos/
-├── opt-tse-analytics/   # Repositório original com histórico Git
-├── bench_v1/            # Worktree commit e010a7f
-├── bench_v2/            # Worktree commit d082d9b
-├── bench_v3/            # Worktree commit 0485406
-├── bench_v4/            # Worktree commit a980086
-└── benchmark_suite/     # Este repositório (benchmark-opt-tse-analytics)
-```
+---
 
-Para recriar os worktrees a partir da raiz do `opt-tse-analytics`:
+### 2. Passo 1: Clonar os Repositórios
+Crie uma pasta de trabalho base e clone tanto o repositório principal de engenharia quanto o repositório da suíte de benchmark:
+
 ```bash
+# Crie e acesse seu diretório de trabalho base
+mkdir opt-tse-workspace && cd opt-tse-workspace
+
+# 1. Clone o repositório principal de engenharia
+git clone https://github.com/lucaspedrom/opt-tse-analytics.git
+
+# 2. Clone o repositório da suíte de benchmark
+git clone https://github.com/lucaspedrom/benchmark-opt-tse-analytics.git
+```
+
+---
+
+### 3. Passo 2: Criar os Git Worktrees das Versões
+Acesse o diretório do projeto de engenharia (`opt-tse-analytics`) e utilize o comando nativo `git worktree add` para provisionar os 4 diretórios independentes lado a lado, apontando para seus respectivos commits:
+
+```bash
+cd opt-tse-analytics
+
+# Cria os 4 worktrees congelados nos commits históricos correspondentes
 git worktree add ../bench_v1 e010a7f
 git worktree add ../bench_v2 d082d9b
 git worktree add ../bench_v3 0485406
 git worktree add ../bench_v4 a980086
+
+# Retorne ao diretório base
+cd ..
 ```
 
-### 2. Executando o Benchmark
+Após essa etapa, sua árvore de diretórios estará organizada da seguinte forma:
 
-Para rodar a bateria completa com 10 rodadas (padrão) e monitoramento de sistema:
-```powershell
-cd D:\Projetos\benchmark_suite
-uv run benchmark_runner.py --rodadas 10 --cooldown 15
+```text
+opt-tse-workspace/
+├── opt-tse-analytics/             # Repositório de engenharia (código principal)
+├── benchmark-opt-tse-analytics/   # Suíte de benchmark (orquestrador e relatórios)
+│
+├── bench_v1/                      # Worktree commit e010a7f (ZIP baseline)
+├── bench_v2/                      # Worktree commit d082d9b (CSV streaming)
+├── bench_v3/                      # Worktree commit 0485406 (Concorrência & LPT)
+└── bench_v4/                      # Worktree commit a980086 (Parquet in-memory)
 ```
 
-Para rodar um teste piloto rápido de 1 rodada (*dry-run*):
-```powershell
+---
+
+### 4. Passo 3: Configurar o Ambiente Virtual Compartilhado
+Como a versão **V4** contém as dependências completas do projeto (`requests`, `rich`, `pyarrow`), inicializamos o ambiente virtual na pasta do `bench_v4`. O orquestrador de benchmark utilizará esse mesmo ambiente (`--python`) para executar todas as versões sob idênticas condições de interpretador:
+
+```bash
+cd bench_v4
+uv sync
+cd ..
+```
+
+---
+
+### 5. Passo 4: Executar a Suíte de Benchmark
+Acesse a pasta da suíte de benchmark e dispare a execução via `uv`:
+
+```bash
+cd benchmark-opt-tse-analytics
+
+# (Recomendado) Teste piloto de 1 rodada para validar se todos os worktrees respondem:
 uv run benchmark_runner.py --dry-run
-```
 
-Para rodar apenas um subconjunto de versões (ex.: comparar apenas V3 e V4):
-```powershell
+# Execução da bateria experimental completa de 10 rodadas (padrão):
+uv run benchmark_runner.py --rodadas 10 --cooldown 15
+
+# (Opcional) Comparação focada apenas entre versões específicas:
 uv run benchmark_runner.py --versoes v3 v4 --rodadas 5
 ```
 
-### 3. Atualizando os Gráficos
-Após a conclusão dos testes, execute o gerador para atualizar as imagens em [`results/charts/`](results/charts/):
-```powershell
+---
+
+### 6. Passo 5: Atualizar as Visualizações
+Ao término das rodadas, os arquivos [`results/benchmark_raw.csv`](results/benchmark_raw.csv) e [`results/benchmark_summary.csv`](results/benchmark_summary.csv) são atualizados automaticamente na pasta `results/`. Para regenerar os gráficos vetoriais SVG de alta resolução:
+
+```bash
 uv run generate_charts.py
 ```
 
